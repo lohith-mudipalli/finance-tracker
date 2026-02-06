@@ -8,6 +8,7 @@ const dbTestRoutes = require("./routes/dbTestRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
+const analyticsRoutes = require("./routes/analyticsRoutes");
 const app = express();
 
 // Middleware
@@ -19,6 +20,7 @@ app.use("/api/v1", dbTestRoutes);
 app.use(errorHandler);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/transactions", transactionRoutes);
+app.use("/api/v1/analytics", analyticsRoutes);
 
 // Health route
 app.get("/health", (req, res) => {
