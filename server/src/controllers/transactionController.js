@@ -1,5 +1,6 @@
 const { createTransaction, getTransactionsByUser } = require("../models/transactionModel");
 const { transactionSchema } = require("../utils/validators");
+const { deleteTransaction } = require("../models/transactionModel");
 
 async function addTransaction(req, res) {
   const parsed = transactionSchema.safeParse(req.body);
@@ -26,4 +27,17 @@ async function listTransactions(req, res) {
   res.json(data);
 }
 
-module.exports = { addTransaction, listTransactions };
+async function removeTransaction(req, res) {
+  const userId = req.user.userId;
+  const id = Number(req.params.id);
+
+  if (!id) return res.status(400).json({ message: "Invalid id" });
+
+  const deleted = await deleteTransaction({ userId, id });
+  if (!deleted) return res.status(404).json({ message: "Transaction not found" });
+
+  res.json({ message: "Deleted", id: deleted.id });
+}
+
+
+module.exports = { addTransaction, listTransactions, removeTransaction };

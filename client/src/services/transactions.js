@@ -11,3 +11,10 @@ export function createTransaction(token, payload) {
     body: payload,
   });
 }
+
+export function deleteTransaction(token, id) {
+  return apiRequest(`/api/v1/transactions/${id}`, {
+    method: "DELETE",
+    token,
+  });
+}

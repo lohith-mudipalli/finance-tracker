@@ -18,4 +18,15 @@ async function getTransactionsByUser(userId) {
   return result.rows;
 }
 
-module.exports = { createTransaction, getTransactionsByUser };
+async function deleteTransaction({ userId, id }) {
+  const result = await pool.query(
+    `DELETE FROM transactions
+     WHERE id=$1 AND user_id=$2
+     RETURNING id`,
+    [id, userId]
+  );
+  return result.rows[0];
+}
+
+
+module.exports = { createTransaction, getTransactionsByUser, deleteTransaction };
