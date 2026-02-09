@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15
+    container_name: finance_db
+    environment:
+      POSTGRES_DB: finance_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./server/sql/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
+
+
+  server:
+    build: ./server
+    container_name: finance_api
+    environment:
+      PORT: 5001
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: finance_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: LOHITH018920011341969RJU3NJSURNW
+      JWT_EXPIRES_IN: 1d
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+
+  client:
+    build: ./client
+    container_name: finance_client
+    environment:
+      VITE_API_BASE: http://localhost:5001
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+
+volumes:
+  pgdata:
