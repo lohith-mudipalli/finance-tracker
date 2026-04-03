@@ -34,19 +34,64 @@ Built with a focus on real-world engineering practices, this project demonstrate
 * **Docker & Docker Compose** – Containerization for seamless local development.
 * **GitHub Actions** – Continuous Integration (CI) for automated testing.
 
+4. Architecture Diagram
+
+```mermaid
+flowchart TB
+    U["User (Browser)"]
+
+    FE["React Frontend (Vite)<br/>Tailwind CSS + Recharts"]
+
+    BE["Node.js + Express Backend<br/>REST APIs + Business Logic"]
+    AUTH["JWT Authentication<br/>Protected Routes"]
+
+    DB["PostgreSQL Database<br/>Users + Transactions"]
+
+    ANALYTICS["Analytics Layer<br/>Category + Daily Summaries"]
+    CSV["CSV Export Service"]
+
+    DOCKER["Docker Compose"]
+    CI["GitHub Actions CI"]
+
+    U --> FE
+    FE -->|"HTTP / JSON Requests"| BE
+    BE --> AUTH
+    BE --> DB
+    BE --> ANALYTICS
+    BE --> CSV
+
+    ANALYTICS --> DB
+    CSV --> DB
+
+    DOCKER -. Runs .-> FE
+    DOCKER -. Runs .-> BE
+    DOCKER -. Runs .-> DB
+
+    CI -. Tests Backend .-> BE
+```
 ---
 
 ####  Project Structure
 
-finance-tracker/
-├── client/                 # React frontend application
-├── server/                 # Express backend API
-├── .github/workflows/      # GitHub Actions CI pipelines
-├── docker-compose.yml      # Multi-container orchestration
-└── README.md               # Project documentation
+```mermaid
+flowchart TB
+    ROOT["finance-tracker/"]
 
+    ROOT --> CLIENT["client/"]
+    CLIENT --> C1["src/"]
+    C1 --> C2["components / pages / charts"]
+
+    ROOT --> SERVER["server/"]
+    SERVER --> S1["routes/"]
+    SERVER --> S2["controllers/"]
+    SERVER --> S3["db/ or config/"]
+    SERVER --> S4["tests/"]
+
+    ROOT --> GITHUB[".github/workflows/"]
+    ROOT --> DOCKER["docker-compose.yml"]
+    ROOT --> README["README.md"]
+```
 ---
-
 ##### Getting Started 
 
 The easiest way to run this application locally is by using Docker.
